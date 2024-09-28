@@ -1,3 +1,16 @@
 spring:
   application:
     name: WaitingQueue
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/house?useSSL=false&serverTimezone=UTC
+    username: username
+    password: password
+  data:
+    redis:
+      host: localhost
+      port: 6379
