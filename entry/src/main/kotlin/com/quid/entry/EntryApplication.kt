@@ -1,11 +1,11 @@
-package com.quid.waitingqueue
+package com.quid.entry
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class WaitingQueueApplication
+class EntryApplication
 
 fun main(args: Array<String>) {
-	runApplication<WaitingQueueApplication>(*args)
+	runApplication<EntryApplication>(*args)
 }

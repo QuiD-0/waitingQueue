@@ -1,13 +1,13 @@
-package com.quid.waitingqueue
+package com.quid.worker
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class WaitingQueueApplicationTests {
+class WorkerApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+    @Test
+    fun contextLoads() {
+    }
 
 }
