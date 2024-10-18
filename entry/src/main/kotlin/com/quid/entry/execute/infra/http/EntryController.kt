@@ -1,5 +1,6 @@
 package com.quid.entry.execute.infra.http
 
+import com.quid.entry.execute.usecase.EntryService
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
@@ -7,13 +8,16 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class EntryController {
+class EntryController(
+    private val entryService: EntryService
+) {
     val log = LoggerFactory.getLogger(this::class.java)!!
 
     @PostMapping("/entry")
-    fun entry(response: HttpServletResponse, @RequestBody entryRequest: EntryRequest) {
-        log.info("entry request: $entryRequest")
-        response.sendRedirect(entryRequest.redirectUrl)
+    fun entry(@RequestBody entry: EntryRequest, response: HttpServletResponse) {
+        log.info("entry request: $entry")
+        entryService.decideUrl(entry.memberSeq, entry.redirectUrl)
+            .let { response.sendRedirect(it) }
     }
 }
 
