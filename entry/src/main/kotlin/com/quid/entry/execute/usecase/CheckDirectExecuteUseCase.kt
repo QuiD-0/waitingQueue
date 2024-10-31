@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service
 class CheckDirectExecuteUseCase(
     private val waitingQueueRepository: WaitingQueueRepository
 ) {
-    fun invoke(memberSeq: Long): Boolean {
-        if (waitingQueueRepository.getWaitingCount() > 0) {
+    fun invoke(redirectUrl: String): Boolean {
+        if (waitingQueueRepository.getWaitingCount(redirectUrl) > 0) {
             return false
         }
-        if (waitingQueueRepository.getActiveCount() > 0) {
+        if (waitingQueueRepository.getActiveCount(redirectUrl) > 0) {
             return false
         }
         return true
