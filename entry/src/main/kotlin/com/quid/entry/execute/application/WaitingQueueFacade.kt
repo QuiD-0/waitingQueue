@@ -5,7 +5,7 @@ import com.quid.entry.execute.domain.WaitingQueueService
 import org.springframework.stereotype.Service
 
 @Service
-class WaitingQueueWorker(
+class WaitingQueueFacade(
     private val waitingQueueService: WaitingQueueService
 ) {
     fun proceed(domain: WaitingQueue): String {
