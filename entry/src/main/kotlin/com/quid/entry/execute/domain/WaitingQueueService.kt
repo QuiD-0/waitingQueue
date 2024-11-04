@@ -1,7 +1,6 @@
 package com.quid.entry.execute.domain
 
-import com.quid.entry.execute.domain.WaitingQueueMapper.toReadEntity
-import com.quid.entry.execute.domain.WaitingQueueMapper.toSaveEntity
+import com.quid.entry.execute.domain.WaitingQueueMapper.toEntity
 import com.quid.entry.execute.infra.repository.WaitingQueueRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -13,8 +12,9 @@ class WaitingQueueService(
     private val waitingQueueRepository: WaitingQueueRepository
 ) {
     fun merge(waitingQueue: WaitingQueue) {
-        if (!waitingQueueRepository.existsBy(toReadEntity(waitingQueue))) {
-            waitingQueueRepository.add(toSaveEntity(waitingQueue))
+        val entity = toEntity(waitingQueue)
+        if (!waitingQueueRepository.existsBy(entity)) {
+            waitingQueueRepository.add(entity)
         }
     }
 

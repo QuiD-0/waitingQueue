@@ -1,33 +1,23 @@
 package com.quid.entry.execute.domain
 
-import com.quid.entry.execute.infra.repository.WaitingQueueReadEntity
-import com.quid.entry.execute.infra.repository.WaitingQueueSaveEntity
+import com.quid.entry.execute.infra.repository.WaitingQueueEntity
 
 object WaitingQueueMapper {
-    fun toDomain(waitingQueueReadEntity: WaitingQueueReadEntity): WaitingQueue {
+    fun toDomain(waitingQueueEntity: WaitingQueueEntity): WaitingQueue {
         return WaitingQueue(
-            redirectUrl = waitingQueueReadEntity.redirectUrl,
-            memberSeq = waitingQueueReadEntity.memberSeq,
-            timestamp = waitingQueueReadEntity.timestamp,
-            status = Status.valueOf(waitingQueueReadEntity.status),
+            redirectUrl = waitingQueueEntity.redirectUrl,
+            memberSeq = waitingQueueEntity.memberSeq,
+            timestamp = waitingQueueEntity.timestamp,
+            status = Status.valueOf(waitingQueueEntity.status),
         )
     }
 
-    fun toReadEntity(waitingQueue: WaitingQueue): WaitingQueueReadEntity {
-        return WaitingQueueReadEntity(
+    fun toEntity(waitingQueue: WaitingQueue): WaitingQueueEntity {
+        return WaitingQueueEntity(
             redirectUrl = waitingQueue.redirectUrl,
             memberSeq = waitingQueue.memberSeq,
             timestamp = waitingQueue.timestamp,
             status = waitingQueue.status.name,
-        )
-    }
-
-    fun toSaveEntity(waitingQueue: WaitingQueue): WaitingQueueSaveEntity {
-        return WaitingQueueSaveEntity(
-            redirectUrl = waitingQueue.redirectUrl,
-            memberSeq = waitingQueue.memberSeq,
-            status = waitingQueue.status.name,
-            score = 0.0,
         )
     }
 }

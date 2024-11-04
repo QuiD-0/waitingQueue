@@ -1,7 +1,7 @@
 package com.quid.entry.execute.infra.repository
 
 import com.quid.entry.execute.domain.WaitingQueue
-import com.quid.entry.execute.domain.WaitingQueueMapper
+import com.quid.entry.execute.domain.WaitingQueueMapper.toEntity
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -33,19 +33,36 @@ class WaitingQueueRedisRepositoryTest(
 
     @Test
     fun add() {
-        val domain = WaitingQueue(
-            redirectUrl = TARGET_URL,
-            memberSeq = 1L,
-            timestamp = LocalDateTime.now()
-        )
-
-        redis.add(WaitingQueueMapper.toSaveEntity(domain))
+        redis.add(toEntity(domain))
         val result = redis.getWaitingCount(TARGET_URL)
 
         assertEquals(1, result)
     }
 
+    @Test
+    fun existsBy() {
+        val entity = toEntity(domain)
+        redis.add(entity)
+        val result = redis.existsBy(entity)
+
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun findBy() {
+        val entity = toEntity(domain)
+        redis.add(entity)
+        val result = redis.findBy(TARGET_URL, entity.value)
+
+        assertEquals(entity, result)
+    }
+
     companion object {
         private const val TARGET_URL = "http://localhost:8080"
+        private val domain = WaitingQueue(
+            redirectUrl = TARGET_URL,
+            memberSeq = 1L,
+            timestamp = LocalDateTime.now()
+        )
     }
 }

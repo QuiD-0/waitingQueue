@@ -9,11 +9,11 @@ data class WaitingQueueEntity(
     val status: String,
     val timestamp: LocalDateTime,
 ) {
-    constructor(redirectUrl: String, memberSeq: Long, status: String, timestamp: Double) : this(
+    constructor(redirectUrl: String, value: WaitingQueueValue, timestamp: Double) : this(
         redirectUrl = redirectUrl,
-        memberSeq = memberSeq,
-        status = status,
-        timestamp = LocalDateTime.ofEpochSecond(timestamp.toLong(), 0, UTC)
+        memberSeq = value.memberSeq,
+        status = value.status,
+        timestamp = LocalDateTime.ofEpochSecond(timestamp.toLong(), value.nano, UTC),
     )
 
     val score: Double
@@ -21,10 +21,11 @@ data class WaitingQueueEntity(
     val key: String
         get() = redirectUrl
     val value: WaitingQueueValue
-        get() = WaitingQueueValue(memberSeq, status)
+        get() = WaitingQueueValue(memberSeq, status, timestamp.nano)
 }
 
 data class WaitingQueueValue(
     val memberSeq: Long,
     val status: String,
+    val nano: Int,
 )

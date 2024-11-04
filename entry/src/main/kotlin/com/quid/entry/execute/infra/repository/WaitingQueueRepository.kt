@@ -8,7 +8,7 @@ interface WaitingQueueRepository {
     fun getActiveCount(targetUrl: String): Int
     fun add(waitingQueue: WaitingQueueEntity)
     fun existsBy(waitingQueue: WaitingQueueEntity): Boolean
-    fun findBy(key: String, value: WaitingQueueValue): WaitingQueueEntity
+    fun findBy(key: String, value: WaitingQueueValue): WaitingQueueEntity?
 }
 
 @Repository
@@ -32,9 +32,8 @@ class WaitingQueueRedisRepository(
         return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value) != null
     }
 
-    override fun findBy(key: String, value: WaitingQueueValue): WaitingQueueEntity {
+    override fun findBy(key: String, value: WaitingQueueValue): WaitingQueueEntity? {
         return waitingQueueTemplate.opsForZSet().score(key, value)
-            ?.let { WaitingQueueEntity(key, value.memberSeq, value.status, it) }
-            ?: throw NoSuchElementException()
+            ?.let { WaitingQueueEntity(key, value, it) }
     }
 }
