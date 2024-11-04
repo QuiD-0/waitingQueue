@@ -1,12 +1,11 @@
 package com.quid.entry.execute.infra.repository
 
-import com.quid.entry.execute.domain.WaitingQueue
 import org.springframework.stereotype.Repository
 
 interface WaitingQueueRepository {
     fun getWaitingCount(targetUrl: String): Int
     fun getActiveCount(targetUrl: String): Int
-    fun merge(waitingQueue: WaitingQueue)
+    fun merge(waitingQueue: WaitingQueueDocument): WaitingQueueDocument
 }
 
 @Repository
@@ -19,7 +18,7 @@ class WaitingQueueDemoRepository : WaitingQueueRepository {
         TODO("Not yet implemented")
     }
 
-    override fun merge(waitingQueue: WaitingQueue) {
+    override fun merge(waitingQueue: WaitingQueueDocument): WaitingQueueDocument {
         TODO("Not yet implemented")
     }
 

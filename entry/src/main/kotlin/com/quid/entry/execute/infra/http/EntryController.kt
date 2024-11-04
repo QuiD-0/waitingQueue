@@ -1,7 +1,6 @@
 package com.quid.entry.execute.infra.http
 
 import com.quid.entry.execute.application.WaitingQueueWorker
-import com.quid.entry.execute.domain.WaitingQueue
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,11 +19,4 @@ class EntryController(
         worker.proceed(entry.toWaitingQueue())
             .let { response.sendRedirect(it) }
     }
-}
-
-data class EntryRequest(
-    val memberSeq: Long,
-    val redirectUrl: String
-) {
-    fun toWaitingQueue() = WaitingQueue(redirectUrl)
 }
