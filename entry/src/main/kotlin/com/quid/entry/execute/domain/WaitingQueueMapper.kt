@@ -8,7 +8,6 @@ object WaitingQueueMapper {
             redirectUrl = waitingQueueDocument.redirectUrl,
             memberSeq = waitingQueueDocument.memberSeq,
             timestamp = waitingQueueDocument.timestamp,
-            id = waitingQueueDocument.id
         )
     }
 
@@ -17,7 +16,6 @@ object WaitingQueueMapper {
             redirectUrl = waitingQueue.redirectUrl,
             memberSeq = waitingQueue.memberSeq,
             timestamp = waitingQueue.timestamp,
-            id = waitingQueue.id
         )
     }
 }

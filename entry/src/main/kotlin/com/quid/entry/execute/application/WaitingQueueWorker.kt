@@ -13,7 +13,7 @@ class WaitingQueueWorker(
             return domain.redirectUrl
         }
 
-        waitingQueueService.append(domain)
+        waitingQueueService.merge(domain)
         return "/waiting"
     }
 }
