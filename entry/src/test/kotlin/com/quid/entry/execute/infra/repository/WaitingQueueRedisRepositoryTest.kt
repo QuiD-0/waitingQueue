@@ -54,7 +54,7 @@ class WaitingQueueRedisRepositoryTest(
     fun findBy() {
         val entity = toEntity(domain)
         redis.add(entity)
-        val result = redis.findBy(TARGET_URL, entity.value)
+        val result = redis.findBy(entity)
 
         assertEquals(entity, result)
     }
