@@ -8,7 +8,7 @@ object WaitingQueueMapper {
             redirectUrl = waitingQueueEntity.redirectUrl,
             memberSeq = waitingQueueEntity.memberSeq,
             timestamp = waitingQueueEntity.timestamp,
-            status = Status.valueOf(waitingQueueEntity.status),
+            waitingStatus = WaitingStatus.valueOf(waitingQueueEntity.status),
         )
     }
 
@@ -17,7 +17,7 @@ object WaitingQueueMapper {
             redirectUrl = waitingQueue.redirectUrl,
             memberSeq = waitingQueue.memberSeq,
             timestamp = waitingQueue.timestamp,
-            status = waitingQueue.status.name,
+            status = waitingQueue.waitingStatus.name,
         )
     }
 }

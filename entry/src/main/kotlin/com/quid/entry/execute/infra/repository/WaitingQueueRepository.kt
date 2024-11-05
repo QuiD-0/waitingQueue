@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository
 interface WaitingQueueRepository {
     fun getWaitingCount(targetUrl: String): Int
     fun getActiveCount(targetUrl: String): Int
-    fun add(waitingQueue: WaitingQueueEntity)
+    fun add(waitingQueue: WaitingQueueEntity): WaitingQueueEntity
     fun existsBy(waitingQueue: WaitingQueueEntity): Boolean
-    fun findBy(key: String, value: WaitingQueueValue): WaitingQueueEntity?
+    fun findBy(waitingQueue: WaitingQueueEntity): WaitingQueueEntity?
 }
 
 @Repository
@@ -24,16 +24,17 @@ class WaitingQueueRedisRepository(
         return intTemplate.opsForValue().get("active::$targetUrl") ?: 0
     }
 
-    override fun add(waitingQueue: WaitingQueueEntity) {
+    override fun add(waitingQueue: WaitingQueueEntity): WaitingQueueEntity {
         waitingQueueTemplate.opsForZSet().add(waitingQueue.key, waitingQueue.value, waitingQueue.score)
+        return waitingQueue
     }
 
     override fun existsBy(waitingQueue: WaitingQueueEntity): Boolean {
         return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value) != null
     }
 
-    override fun findBy(key: String, value: WaitingQueueValue): WaitingQueueEntity? {
-        return waitingQueueTemplate.opsForZSet().score(key, value)
-            ?.let { WaitingQueueEntity(key, value, it) }
+    override fun findBy(waitingQueue: WaitingQueueEntity): WaitingQueueEntity? {
+        return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value)
+            ?.let { WaitingQueueEntity(waitingQueue.key, waitingQueue.value, it) }
     }
 }

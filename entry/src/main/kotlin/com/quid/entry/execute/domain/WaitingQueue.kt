@@ -6,11 +6,6 @@ data class WaitingQueue(
     val redirectUrl: String,
     val memberSeq: Long,
     val timestamp: LocalDateTime,
-    val status: Status = Status.WAITING,
+    val waitingStatus: WaitingStatus = WaitingStatus.WAITING,
 )
 
-enum class Status {
-    WAITING,
-    PROCESSING,
-    DONE,
-}

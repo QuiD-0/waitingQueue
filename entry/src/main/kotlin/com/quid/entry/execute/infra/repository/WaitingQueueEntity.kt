@@ -10,10 +10,10 @@ data class WaitingQueueEntity(
     val timestamp: LocalDateTime,
 ) {
     constructor(redirectUrl: String, value: WaitingQueueValue, timestamp: Double) : this(
-        redirectUrl = redirectUrl,
-        memberSeq = value.memberSeq,
-        status = value.status,
-        timestamp = LocalDateTime.ofEpochSecond(timestamp.toLong(), value.nano, UTC),
+        redirectUrl,
+        value.memberSeq,
+        value.status,
+        LocalDateTime.ofEpochSecond(timestamp.toLong(), value.nano, UTC),
     )
 
     val score: Double

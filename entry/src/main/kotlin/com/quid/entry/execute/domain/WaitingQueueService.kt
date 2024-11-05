@@ -1,5 +1,6 @@
 package com.quid.entry.execute.domain
 
+import com.quid.entry.execute.domain.WaitingQueueMapper.toDomain
 import com.quid.entry.execute.domain.WaitingQueueMapper.toEntity
 import com.quid.entry.execute.infra.repository.WaitingQueueRepository
 import org.springframework.beans.factory.annotation.Value
@@ -11,11 +12,11 @@ class WaitingQueueService(
     private val limit: Int,
     private val waitingQueueRepository: WaitingQueueRepository
 ) {
-    fun merge(waitingQueue: WaitingQueue) {
+    fun merge(waitingQueue: WaitingQueue): WaitingQueue {
         val entity = toEntity(waitingQueue)
-        if (!waitingQueueRepository.existsBy(entity)) {
-            waitingQueueRepository.add(entity)
-        }
+        val find = waitingQueueRepository.findBy(entity)
+            ?: waitingQueueRepository.add(entity)
+        return toDomain(find)
     }
 
     fun checkDirectExecute(redirectUrl: String): Boolean {

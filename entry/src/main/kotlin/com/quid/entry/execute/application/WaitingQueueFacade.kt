@@ -12,7 +12,6 @@ class WaitingQueueFacade(
         if (waitingQueueService.checkDirectExecute(domain.redirectUrl)) {
             return domain.redirectUrl
         }
-
         waitingQueueService.merge(domain)
         return "/waiting"
     }
