@@ -1,7 +1,7 @@
 package com.quid.entry.execute.infra.repository
 
-import com.quid.entry.execute.domain.WaitingQueue
-import com.quid.entry.execute.domain.WaitingQueueMapper.toEntity
+import com.quid.entry.execute.domain.Ticket
+import com.quid.entry.execute.domain.TicketMapper.toEntity
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Disabled
@@ -61,7 +61,7 @@ class WaitingQueueRedisRepositoryTest(
 
     companion object {
         private const val TARGET_URL = "http://localhost:8080"
-        private val domain = WaitingQueue(
+        private val domain = Ticket(
             redirectUrl = TARGET_URL,
             memberSeq = 1L,
             timestamp = LocalDateTime.now()

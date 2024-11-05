@@ -6,13 +6,11 @@ import java.time.ZoneOffset.UTC
 data class WaitingQueueEntity(
     val redirectUrl: String,
     val memberSeq: Long,
-    val status: String,
     val timestamp: LocalDateTime,
 ) {
     constructor(redirectUrl: String, value: WaitingQueueValue, timestamp: Double) : this(
         redirectUrl,
         value.memberSeq,
-        value.status,
         LocalDateTime.ofEpochSecond(timestamp.toLong(), value.nano, UTC),
     )
 
@@ -21,11 +19,10 @@ data class WaitingQueueEntity(
     val key: String
         get() = redirectUrl
     val value: WaitingQueueValue
-        get() = WaitingQueueValue(memberSeq, status, timestamp.nano)
+        get() = WaitingQueueValue(memberSeq, timestamp.nano)
 }
 
 data class WaitingQueueValue(
     val memberSeq: Long,
-    val status: String,
     val nano: Int,
 )

@@ -1,14 +1,17 @@
 package com.quid.entry.execute.infra.repository
 
+import com.quid.entry.execute.domain.Ticket
+import com.quid.entry.execute.domain.TicketMapper
+import com.quid.entry.execute.domain.TicketMapper.toEntity
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Repository
 
 interface WaitingQueueRepository {
     fun getWaitingCount(targetUrl: String): Int
     fun getActiveCount(targetUrl: String): Int
-    fun add(waitingQueue: WaitingQueueEntity): WaitingQueueEntity
-    fun existsBy(waitingQueue: WaitingQueueEntity): Boolean
-    fun findBy(waitingQueue: WaitingQueueEntity): WaitingQueueEntity?
+    fun add(ticket: Ticket): Ticket
+    fun existsBy(ticket: Ticket): Boolean
+    fun findBy(ticket: Ticket): Ticket?
 }
 
 @Repository
@@ -24,17 +27,21 @@ class WaitingQueueRedisRepository(
         return intTemplate.opsForValue().get("active::$targetUrl") ?: 0
     }
 
-    override fun add(waitingQueue: WaitingQueueEntity): WaitingQueueEntity {
+    override fun add(ticket: Ticket): Ticket {
+        val waitingQueue = toEntity(ticket)
         waitingQueueTemplate.opsForZSet().add(waitingQueue.key, waitingQueue.value, waitingQueue.score)
-        return waitingQueue
+        return ticket
     }
 
-    override fun existsBy(waitingQueue: WaitingQueueEntity): Boolean {
+    override fun existsBy(ticket: Ticket): Boolean {
+        val waitingQueue = toEntity(ticket)
         return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value) != null
     }
 
-    override fun findBy(waitingQueue: WaitingQueueEntity): WaitingQueueEntity? {
+    override fun findBy(ticket: Ticket): Ticket? {
+        val waitingQueue = toEntity(ticket)
         return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value)
             ?.let { WaitingQueueEntity(waitingQueue.key, waitingQueue.value, it) }
+            ?.let { TicketMapper.toDomain(it) }
     }
 }
