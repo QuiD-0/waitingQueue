@@ -1,7 +1,6 @@
 package com.quid.entry.execute.infra.repository
 
 import com.quid.entry.execute.domain.Ticket
-import com.quid.entry.execute.domain.TicketMapper.toEntity
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Disabled
@@ -35,7 +34,7 @@ class WaitingQueueRedisRepositoryTest(
 
     @Test
     fun add() {
-        redis.add(toEntity(domain))
+        redis.add(domain)
         val result = redis.getWaitingCount(TARGET_URL)
 
         assertEquals(1, result)
@@ -43,20 +42,18 @@ class WaitingQueueRedisRepositoryTest(
 
     @Test
     fun existsBy() {
-        val entity = toEntity(domain)
-        redis.add(entity)
-        val result = redis.existsBy(entity)
+        redis.add(domain)
+        val result = redis.existsBy(domain)
 
         assertEquals(true, result)
     }
 
     @Test
     fun findBy() {
-        val entity = toEntity(domain)
-        redis.add(entity)
-        val result = redis.findBy(entity)
+        redis.add(domain)
+        val result = redis.findBy(domain)
 
-        assertEquals(entity, result)
+        assertEquals(domain, result)
     }
 
     companion object {
