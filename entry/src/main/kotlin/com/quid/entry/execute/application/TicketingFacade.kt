@@ -9,7 +9,7 @@ class TicketingFacade(
     private val ticketService: TicketService,
 ) {
     fun proceed(domain: Ticket): String {
-        if (ticketService.checkDirectExecute(domain.redirectUrl)) {
+        if (ticketService.checkDirectExecute(domain)) {
             return domain.redirectUrl
         }
         ticketService.merge(domain)

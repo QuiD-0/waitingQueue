@@ -7,5 +7,9 @@ data class EntryRequest(
     val memberSeq: Long,
     val redirectUrl: String
 ) {
-    fun toTicket() = Ticket(redirectUrl, memberSeq, LocalDateTime.now())
+    fun toTicket() = Ticket(
+        redirectUrl = redirectUrl,
+        memberSeq = memberSeq,
+        timestamp = LocalDateTime.now()
+    )
 }

@@ -1,7 +1,6 @@
 package com.quid.entry.execute.infra.repository
 
 import com.quid.entry.execute.domain.Ticket
-import com.quid.entry.execute.domain.TicketMapper
 import com.quid.entry.execute.domain.TicketMapper.toWaiting
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Repository
@@ -9,10 +8,9 @@ import org.springframework.stereotype.Repository
 interface WaitingQueueRepository {
     fun getWaitingCount(targetUrl: String): Int
     fun getActiveCount(targetUrl: String): Int
-    fun add(ticket: Ticket): Ticket
+    fun add(ticket: Ticket)
     fun existsBy(ticket: Ticket): Boolean
-    fun findBy(ticket: Ticket): Ticket?
-    fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int
+    fun getCurrentRank(ticket: Ticket): Int
 }
 
 @Repository
@@ -28,10 +26,9 @@ class WaitingQueueRedisRepository(
         return intTemplate.opsForValue().get("active::$targetUrl") ?: 0
     }
 
-    override fun add(ticket: Ticket): Ticket {
+    override fun add(ticket: Ticket) {
         val waitingQueue = toWaiting(ticket)
         waitingQueueTemplate.opsForZSet().add(waitingQueue.key, waitingQueue.value, waitingQueue.score)
-        return ticket
     }
 
     override fun existsBy(ticket: Ticket): Boolean {
@@ -39,14 +36,8 @@ class WaitingQueueRedisRepository(
         return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value) != null
     }
 
-    override fun findBy(ticket: Ticket): Ticket? {
+    override fun getCurrentRank(ticket: Ticket): Int {
         val waitingQueue = toWaiting(ticket)
-        return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value)
-            ?.let { WaitingQueueEntity(waitingQueue.key, waitingQueue.value, it) }
-            ?.let { TicketMapper.toDomain(it) }
-    }
-
-    override fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
-        return waitingQueueTemplate.opsForZSet().rank(redirectUrl, memberSeq)?.toInt() ?: -1
+        return waitingQueueTemplate.opsForZSet().rank(waitingQueue.key, waitingQueue.value)?.toInt() ?: -1
     }
 }

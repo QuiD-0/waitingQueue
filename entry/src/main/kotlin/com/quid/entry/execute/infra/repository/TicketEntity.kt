@@ -9,12 +9,4 @@ data class TicketEntity(
     val memberSeq: Long,
     val timestamp: LocalDateTime,
     val status: TicketStatus,
-) {
-    fun toWaitingQueueEntity(): WaitingQueueEntity {
-        return WaitingQueueEntity(
-            redirectUrl = redirectUrl,
-            memberSeq = memberSeq,
-            timestamp = timestamp,
-        )
-    }
-}
+)
