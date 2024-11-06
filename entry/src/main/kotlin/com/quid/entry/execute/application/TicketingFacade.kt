@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TicketingFacade(
-    private val ticketService: TicketService
+    private val ticketService: TicketService,
 ) {
     fun proceed(domain: Ticket): String {
         if (ticketService.checkDirectExecute(domain.redirectUrl)) {
@@ -14,5 +14,9 @@ class TicketingFacade(
         }
         ticketService.merge(domain)
         return "/waiting"
+    }
+
+    fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
+        return ticketService.getCurrentRank(redirectUrl, memberSeq)
     }
 }

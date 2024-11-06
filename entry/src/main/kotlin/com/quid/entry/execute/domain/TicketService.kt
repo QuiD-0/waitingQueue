@@ -24,4 +24,8 @@ class TicketService(
         }
         return true
     }
+
+    fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
+        return waitingQueueRepository.getCurrentRank(redirectUrl, memberSeq)
+    }
 }

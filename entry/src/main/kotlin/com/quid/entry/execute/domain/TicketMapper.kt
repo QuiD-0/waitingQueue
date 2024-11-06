@@ -1,5 +1,6 @@
 package com.quid.entry.execute.domain
 
+import com.quid.entry.execute.infra.repository.TicketEntity
 import com.quid.entry.execute.infra.repository.WaitingQueueEntity
 
 object TicketMapper {
@@ -11,11 +12,21 @@ object TicketMapper {
         )
     }
 
-    fun toEntity(ticket: Ticket): WaitingQueueEntity {
+    fun toWaiting(ticket: Ticket): WaitingQueueEntity {
         return WaitingQueueEntity(
             redirectUrl = ticket.redirectUrl,
             memberSeq = ticket.memberSeq,
             timestamp = ticket.timestamp,
+        )
+    }
+
+    fun toTicketEntity(ticket: Ticket): TicketEntity {
+        return TicketEntity(
+            id = ticket.id,
+            redirectUrl = ticket.redirectUrl,
+            memberSeq = ticket.memberSeq,
+            timestamp = ticket.timestamp,
+            status = ticket.status,
         )
     }
 }
