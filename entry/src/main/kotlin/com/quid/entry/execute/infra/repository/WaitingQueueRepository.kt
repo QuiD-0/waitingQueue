@@ -9,7 +9,6 @@ interface WaitingQueueRepository {
     fun getWaitingCount(targetUrl: String): Int
     fun getActiveCount(targetUrl: String): Int
     fun add(ticket: Ticket)
-    fun existsBy(ticket: Ticket): Boolean
     fun getCurrentRank(ticket: Ticket): Int
 }
 
@@ -29,11 +28,6 @@ class WaitingQueueRedisRepository(
     override fun add(ticket: Ticket) {
         val waitingQueue = toWaiting(ticket)
         waitingQueueTemplate.opsForZSet().add(waitingQueue.key, waitingQueue.value, waitingQueue.score)
-    }
-
-    override fun existsBy(ticket: Ticket): Boolean {
-        val waitingQueue = toWaiting(ticket)
-        return waitingQueueTemplate.opsForZSet().score(waitingQueue.key, waitingQueue.value) != null
     }
 
     override fun getCurrentRank(ticket: Ticket): Int {

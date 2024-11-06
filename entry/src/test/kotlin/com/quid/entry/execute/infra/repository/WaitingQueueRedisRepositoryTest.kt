@@ -40,22 +40,6 @@ class WaitingQueueRedisRepositoryTest(
         assertEquals(1, result)
     }
 
-    @Test
-    fun existsBy() {
-        redis.add(domain)
-        val result = redis.existsBy(domain)
-
-        assertEquals(true, result)
-    }
-
-    @Test
-    fun findBy() {
-        redis.add(domain)
-        val result = redis.findBy(domain)
-
-        assertEquals(domain, result)
-    }
-
     companion object {
         private const val TARGET_URL = "http://localhost:8080"
         private val domain = Ticket(

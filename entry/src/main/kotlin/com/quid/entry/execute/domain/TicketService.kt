@@ -32,7 +32,7 @@ class TicketService(
     }
 
     fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
-        val ticket = ticketRepository.findBy(redirectUrl, memberSeq)
+        val ticket = ticketRepository.findBy(redirectUrl, memberSeq) ?: throw RuntimeException("Ticket not found")
         return waitingQueueRepository.getCurrentRank(ticket)
     }
 }
