@@ -4,6 +4,7 @@ import com.quid.entry.execute.domain.TicketStatus
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDateTime
 
 @Document("ticket")
 data class TicketEntity(
@@ -13,5 +14,14 @@ data class TicketEntity(
     val memberSeq: Long,
     val timestamp: LocalDateTimeNano,
     val status: TicketStatus,
+)
+
+class LocalDateTimeNano(
+    private val timestamp: LocalDateTime = LocalDateTime.now(),
+    private val nano: Int = timestamp.nano
 ) {
+
+    fun toLocalDateTime(): LocalDateTime {
+        return timestamp.withNano(nano)
+    }
 }

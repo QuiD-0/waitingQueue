@@ -12,11 +12,6 @@ data class WaitingQueueEntity(
         get() = timestamp.toEpochSecond(UTC).toDouble()
     val key: String
         get() = redirectUrl
-    val value: WaitingQueueValue
-        get() = WaitingQueueValue(memberSeq, timestamp.nano)
+    val value: Long
+        get() = memberSeq
 }
-
-data class WaitingQueueValue(
-    val memberSeq: Long,
-    val nano: Int,
-)

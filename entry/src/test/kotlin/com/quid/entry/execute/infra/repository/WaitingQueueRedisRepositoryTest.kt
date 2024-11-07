@@ -49,7 +49,7 @@ class WaitingQueueRedisRepositoryTest(
         redis.add(domain)
         redis.add(ticket(LocalDateTime.now().plusHours(1)))
         redis.add(ticket(LocalDateTime.now().plusHours(2)))
-        val result = redis.getCurrentRank(domain)
+        val result = redis.getCurrentRank(domain.redirectUrl, domain.memberSeq)
 
         assertEquals(1, result)
     }

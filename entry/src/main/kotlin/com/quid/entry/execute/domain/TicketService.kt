@@ -19,7 +19,7 @@ class TicketService(
     }
 
     fun checkDirectExecute(ticket: Ticket): Boolean {
-        if (ticketRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)) {
+        if (waitingQueueRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)) {
             return false
         }
         if (waitingQueueRepository.getWaitingCount(ticket.redirectUrl) > 0) {
@@ -32,7 +32,6 @@ class TicketService(
     }
 
     fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
-        val ticket = ticketRepository.findBy(redirectUrl, memberSeq) ?: throw RuntimeException("Ticket not found")
-        return waitingQueueRepository.getCurrentRank(ticket)
+        return waitingQueueRepository.getCurrentRank(redirectUrl, memberSeq)
     }
 }
