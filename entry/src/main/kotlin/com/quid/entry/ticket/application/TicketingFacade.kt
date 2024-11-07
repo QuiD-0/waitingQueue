@@ -1,7 +1,7 @@
-package com.quid.entry.execute.application
+package com.quid.entry.ticket.application
 
-import com.quid.entry.execute.domain.Ticket
-import com.quid.entry.execute.domain.TicketService
+import com.quid.entry.ticket.domain.Ticket
+import com.quid.entry.ticket.domain.TicketService
 import org.springframework.stereotype.Service
 
 @Service

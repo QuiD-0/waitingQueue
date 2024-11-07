@@ -1,7 +1,7 @@
-package com.quid.entry.execute.infra.repository
+package com.quid.entry.ticket.infra.repository
 
-import com.quid.entry.execute.domain.Ticket
-import com.quid.entry.execute.domain.TicketMapper
+import com.quid.entry.ticket.domain.Ticket
+import com.quid.entry.ticket.domain.TicketMapper
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 

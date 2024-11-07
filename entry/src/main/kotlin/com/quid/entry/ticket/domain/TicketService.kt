@@ -1,7 +1,7 @@
-package com.quid.entry.execute.domain
+package com.quid.entry.ticket.domain
 
-import com.quid.entry.execute.infra.repository.TicketRepository
-import com.quid.entry.execute.infra.repository.WaitingQueueRepository
+import com.quid.entry.ticket.infra.repository.TicketRepository
+import com.quid.entry.ticket.infra.repository.WaitingQueueRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -19,19 +19,19 @@ class TicketService(
     }
 
     fun needWaiting(ticket: Ticket): Boolean {
-        if (waitingQueueRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)) {
+        if (waitingQueueRepository.existsBy(ticket.memberSeq)) {
             return true
         }
-        if (waitingQueueRepository.getWaitingCount(ticket.redirectUrl) > 0) {
+        if (waitingQueueRepository.getWaitingCount() > 0) {
             return true
         }
-        if (waitingQueueRepository.getActiveCount(ticket.redirectUrl) > limit) {
+        if (waitingQueueRepository.getActiveCount() > limit) {
             return true
         }
         return false
     }
 
     fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
-        return waitingQueueRepository.getCurrentRank(redirectUrl, memberSeq)
+        return waitingQueueRepository.getCurrentRank(memberSeq)
     }
 }

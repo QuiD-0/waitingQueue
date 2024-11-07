@@ -1,4 +1,4 @@
-package com.quid.entry.execute.domain
+package com.quid.entry.ticket.domain
 
 import org.bson.types.ObjectId
 import java.time.LocalDateTime

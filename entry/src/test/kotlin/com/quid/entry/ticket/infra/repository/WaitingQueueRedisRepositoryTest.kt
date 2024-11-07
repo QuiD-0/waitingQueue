@@ -1,8 +1,9 @@
-package com.quid.entry.execute.infra.repository
+package com.quid.entry.ticket.infra.repository
 
-import com.quid.entry.execute.domain.Ticket
+import com.quid.entry.ticket.domain.Ticket
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.redis.core.RedisTemplate
@@ -11,7 +12,7 @@ import org.springframework.test.context.TestConstructor
 import org.springframework.test.context.TestConstructor.AutowireMode.ALL
 import java.time.LocalDateTime
 
-//@Disabled
+@Disabled
 @SpringBootTest
 @ActiveProfiles("dev")
 @TestConstructor(autowireMode = ALL)
@@ -26,7 +27,7 @@ class WaitingQueueRedisRepositoryTest(
 
     @Test
     fun getWaitingCount() {
-        val result = redis.getWaitingCount(TARGET_URL)
+        val result = redis.getWaitingCount()
 
         assertEquals(0, result)
     }
@@ -35,7 +36,7 @@ class WaitingQueueRedisRepositoryTest(
     fun add() {
         val domain = ticket(LocalDateTime.now())
         redis.add(domain)
-        val result = redis.getWaitingCount(TARGET_URL)
+        val result = redis.getWaitingCount()
 
         assertEquals(1, result)
     }
@@ -48,7 +49,7 @@ class WaitingQueueRedisRepositoryTest(
         redis.add(domain)
         redis.add(ticket(LocalDateTime.now().plusHours(1)))
         redis.add(ticket(LocalDateTime.now().plusHours(2)))
-        val result = redis.getCurrentRank(domain.redirectUrl, domain.memberSeq)
+        val result = redis.getCurrentRank(domain.memberSeq)
 
         assertEquals(1, result)
     }

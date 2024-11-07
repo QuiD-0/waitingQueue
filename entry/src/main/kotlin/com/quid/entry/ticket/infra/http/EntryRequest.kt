@@ -1,6 +1,6 @@
-package com.quid.entry.execute.infra.http
+package com.quid.entry.ticket.infra.http
 
-import com.quid.entry.execute.domain.Ticket
+import com.quid.entry.ticket.domain.Ticket
 import java.time.LocalDateTime
 
 data class EntryRequest(

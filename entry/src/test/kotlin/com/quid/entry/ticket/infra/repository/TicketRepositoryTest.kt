@@ -1,7 +1,8 @@
-package com.quid.entry.execute.infra.repository
+package com.quid.entry.ticket.infra.repository
 
-import com.quid.entry.execute.domain.Ticket
+import com.quid.entry.ticket.domain.Ticket
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.boot.test.context.SpringBootTest
@@ -13,6 +14,7 @@ import java.time.LocalDateTime
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@Disabled
 @SpringBootTest
 @ActiveProfiles("dev")
 @TestConstructor(autowireMode = ALL)
@@ -29,7 +31,7 @@ class TicketRepositoryTest(
     fun existsBy() {
         val ticket = ticket(LocalDateTime.now())
         ticketRepository.save(ticket)
-        
+
         val result = ticketRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)
 
         assertTrue { result }

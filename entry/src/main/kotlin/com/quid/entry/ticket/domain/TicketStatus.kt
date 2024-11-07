@@ -1,4 +1,4 @@
-package com.quid.entry.execute.domain
+package com.quid.entry.ticket.domain
 
 enum class TicketStatus {
     WAITING,

@@ -1,6 +1,6 @@
-package com.quid.entry.execute.infra.http
+package com.quid.entry.ticket.infra.http
 
-import com.quid.entry.execute.application.TicketingFacade
+import com.quid.entry.ticket.application.TicketingFacade
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping

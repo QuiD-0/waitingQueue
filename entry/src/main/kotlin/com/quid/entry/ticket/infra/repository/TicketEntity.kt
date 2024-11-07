@@ -1,6 +1,6 @@
-package com.quid.entry.execute.infra.repository
+package com.quid.entry.ticket.infra.repository
 
-import com.quid.entry.execute.domain.TicketStatus
+import com.quid.entry.ticket.domain.TicketStatus
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

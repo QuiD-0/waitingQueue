@@ -1,4 +1,4 @@
-package com.quid.entry.execute.infra.repository
+package com.quid.entry.ticket.infra.repository
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

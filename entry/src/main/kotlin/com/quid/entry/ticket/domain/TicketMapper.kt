@@ -1,8 +1,8 @@
-package com.quid.entry.execute.domain
+package com.quid.entry.ticket.domain
 
-import com.quid.entry.execute.infra.repository.LocalDateTimeNano
-import com.quid.entry.execute.infra.repository.TicketEntity
-import com.quid.entry.execute.infra.repository.WaitingQueueEntity
+import com.quid.entry.ticket.infra.repository.LocalDateTimeNano
+import com.quid.entry.ticket.infra.repository.TicketEntity
+import com.quid.entry.ticket.infra.repository.WaitingQueueEntity
 
 object TicketMapper {
 
@@ -18,7 +18,6 @@ object TicketMapper {
 
     fun toWaiting(ticket: Ticket): WaitingQueueEntity {
         return WaitingQueueEntity(
-            redirectUrl = ticket.redirectUrl,
             memberSeq = ticket.memberSeq,
             timestamp = ticket.timestamp,
         )

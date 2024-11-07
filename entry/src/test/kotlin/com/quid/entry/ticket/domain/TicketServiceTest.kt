@@ -1,7 +1,7 @@
-package com.quid.entry.execute.domain
+package com.quid.entry.ticket.domain
 
-import com.quid.entry.execute.infra.repository.TicketRepository
-import com.quid.entry.execute.infra.repository.WaitingQueueRepository
+import com.quid.entry.ticket.infra.repository.TicketRepository
+import com.quid.entry.ticket.infra.repository.WaitingQueueRepository
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -20,7 +20,7 @@ class TicketServiceTest {
     fun needWaiting1() {
         val ticket = Ticket("http://localhost:8080", 1, LocalDateTime.now())
 
-        given(waitingQueueRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)).willReturn(true)
+        given(waitingQueueRepository.existsBy(ticket.memberSeq)).willReturn(true)
 
         assertTrue(ticketService.needWaiting(ticket))
     }
@@ -30,8 +30,8 @@ class TicketServiceTest {
     fun needWaiting2() {
         val ticket = Ticket("http://localhost:8080", 1, LocalDateTime.now())
 
-        given(waitingQueueRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)).willReturn(false)
-        given(waitingQueueRepository.getWaitingCount(ticket.redirectUrl)).willReturn(10)
+        given(waitingQueueRepository.existsBy(ticket.memberSeq)).willReturn(false)
+        given(waitingQueueRepository.getWaitingCount()).willReturn(10)
 
         assertTrue(ticketService.needWaiting(ticket))
     }
@@ -41,9 +41,9 @@ class TicketServiceTest {
     fun needWaiting3() {
         val ticket = Ticket("http://localhost:8080", 1, LocalDateTime.now())
 
-        given(waitingQueueRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)).willReturn(false)
-        given(waitingQueueRepository.getWaitingCount(ticket.redirectUrl)).willReturn(0)
-        given(waitingQueueRepository.getActiveCount(ticket.redirectUrl)).willReturn(11)
+        given(waitingQueueRepository.existsBy(ticket.memberSeq)).willReturn(false)
+        given(waitingQueueRepository.getWaitingCount()).willReturn(0)
+        given(waitingQueueRepository.getActiveCount()).willReturn(11)
 
         assertTrue(ticketService.needWaiting(ticket))
     }
