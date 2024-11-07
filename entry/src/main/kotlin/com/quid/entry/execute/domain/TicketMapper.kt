@@ -1,14 +1,18 @@
 package com.quid.entry.execute.domain
 
+import com.quid.entry.execute.infra.repository.LocalDateTimeNano
 import com.quid.entry.execute.infra.repository.TicketEntity
 import com.quid.entry.execute.infra.repository.WaitingQueueEntity
 
 object TicketMapper {
-    fun toDomain(waitingQueueEntity: WaitingQueueEntity): Ticket {
+
+    fun toDomain(ticketEntity: TicketEntity): Ticket {
         return Ticket(
-            redirectUrl = waitingQueueEntity.redirectUrl,
-            memberSeq = waitingQueueEntity.memberSeq,
-            timestamp = waitingQueueEntity.timestamp,
+            id = ticketEntity.id,
+            redirectUrl = ticketEntity.redirectUrl,
+            memberSeq = ticketEntity.memberSeq,
+            timestamp = ticketEntity.timestamp.toLocalDateTime(),
+            status = ticketEntity.status,
         )
     }
 
@@ -25,7 +29,7 @@ object TicketMapper {
             id = ticket.id,
             redirectUrl = ticket.redirectUrl,
             memberSeq = ticket.memberSeq,
-            timestamp = ticket.timestamp,
+            timestamp = LocalDateTimeNano(ticket.timestamp),
             status = ticket.status,
         )
     }

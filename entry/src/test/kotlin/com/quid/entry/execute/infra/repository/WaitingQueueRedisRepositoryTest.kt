@@ -34,18 +34,35 @@ class WaitingQueueRedisRepositoryTest(
 
     @Test
     fun add() {
+        val domain = ticket(LocalDateTime.now())
         redis.add(domain)
         val result = redis.getWaitingCount(TARGET_URL)
 
         assertEquals(1, result)
     }
 
-    companion object {
-        private const val TARGET_URL = "http://localhost:8080"
-        private val domain = Ticket(
+    @Test
+    fun getCurrentRank() {
+        val domain = ticket(LocalDateTime.now())
+
+        redis.add(ticket(LocalDateTime.now().minusHours(1)))
+        redis.add(domain)
+        redis.add(ticket(LocalDateTime.now().plusHours(1)))
+        redis.add(ticket(LocalDateTime.now().plusHours(2)))
+        val result = redis.getCurrentRank(domain)
+
+        assertEquals(1, result)
+    }
+
+    fun ticket(time: LocalDateTime): Ticket {
+        return Ticket(
             redirectUrl = TARGET_URL,
             memberSeq = 1L,
-            timestamp = LocalDateTime.now()
+            timestamp = time
         )
+    }
+
+    companion object {
+        private const val TARGET_URL = "http://localhost:8080"
     }
 }
