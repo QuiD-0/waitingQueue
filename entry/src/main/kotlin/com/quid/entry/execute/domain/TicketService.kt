@@ -18,17 +18,17 @@ class TicketService(
                 .also { waitingQueueRepository.add(it) }
     }
 
-    fun checkDirectExecute(ticket: Ticket): Boolean {
+    fun needWaiting(ticket: Ticket): Boolean {
         if (waitingQueueRepository.existsBy(ticket.redirectUrl, ticket.memberSeq)) {
-            return false
+            return true
         }
         if (waitingQueueRepository.getWaitingCount(ticket.redirectUrl) > 0) {
-            return false
+            return true
         }
         if (waitingQueueRepository.getActiveCount(ticket.redirectUrl) > limit) {
-            return false
+            return true
         }
-        return true
+        return false
     }
 
     fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {

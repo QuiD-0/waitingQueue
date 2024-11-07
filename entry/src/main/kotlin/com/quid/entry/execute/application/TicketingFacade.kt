@@ -9,11 +9,11 @@ class TicketingFacade(
     private val ticketService: TicketService,
 ) {
     fun proceed(domain: Ticket): String {
-        if (ticketService.checkDirectExecute(domain)) {
-            return domain.redirectUrl
+        if (ticketService.needWaiting(domain)) {
+            ticketService.merge(domain)
+            return "/waiting"
         }
-        ticketService.merge(domain)
-        return "/waiting"
+        return domain.redirectUrl
     }
 
     fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {

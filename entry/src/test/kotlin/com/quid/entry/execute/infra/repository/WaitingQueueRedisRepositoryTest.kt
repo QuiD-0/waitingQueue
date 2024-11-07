@@ -3,7 +3,6 @@ package com.quid.entry.execute.infra.repository
 import com.quid.entry.execute.domain.Ticket
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.redis.core.RedisTemplate
@@ -12,7 +11,7 @@ import org.springframework.test.context.TestConstructor
 import org.springframework.test.context.TestConstructor.AutowireMode.ALL
 import java.time.LocalDateTime
 
-@Disabled
+//@Disabled
 @SpringBootTest
 @ActiveProfiles("dev")
 @TestConstructor(autowireMode = ALL)
@@ -63,6 +62,6 @@ class WaitingQueueRedisRepositoryTest(
     }
 
     companion object {
-        private const val TARGET_URL = "http://localhost:8080"
+        private const val TARGET_URL = "test-url"
     }
 }
