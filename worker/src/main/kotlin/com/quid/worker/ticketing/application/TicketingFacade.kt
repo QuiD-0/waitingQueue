@@ -10,6 +10,7 @@ class TicketingFacade(
     private val ticketService: TicketService,
     private val waitingQueueService: WaitingQueueService
 ) {
+
     fun processNext() {
         waitingQueueService.activeCountUp()
         val ticket: Ticket = ticketService.findFirstTicket()
