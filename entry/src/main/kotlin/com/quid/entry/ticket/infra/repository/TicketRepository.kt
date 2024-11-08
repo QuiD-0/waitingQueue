@@ -2,6 +2,7 @@ package com.quid.entry.ticket.infra.repository
 
 import com.quid.entry.ticket.domain.Ticket
 import com.quid.entry.ticket.domain.TicketMapper
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
@@ -24,7 +25,7 @@ class TicketRepository(
     }
 }
 
-interface TicketMongoRepository : MongoRepository<TicketEntity, Long> {
+interface TicketMongoRepository : MongoRepository<TicketEntity, ObjectId> {
     fun existsByRedirectUrlAndMemberSeq(redirectUrl: String, memberSeq: Long): Boolean
     fun findByRedirectUrlAndMemberSeq(redirectUrl: String, memberSeq: Long): TicketEntity?
 }

@@ -1,19 +1,15 @@
 package com.quid.worker.ticketing.domain
 
-import org.bson.types.ObjectId
 import java.time.LocalDateTime
 
 data class Ticket(
-    val id: ObjectId,
+    val id: String?,
     val redirectUrl: String,
     val memberSeq: Long,
     val timestamp: LocalDateTime,
-    val status: String,
+    val status: TicketStatus,
 ) {
-    fun toWaitingQueue(): WaitingQueue {
-        return WaitingQueue(
-            memberSeq = memberSeq,
-            timestamp = timestamp
-        )
+    fun updateStatus(status: TicketStatus): Ticket {
+        return this.copy(status = status)
     }
 }
