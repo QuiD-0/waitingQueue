@@ -18,4 +18,7 @@ class WaitingQueueService(
     fun getFirstTicketMember(): Long {
         return waitingQueueRepository.findFirstTicket() ?: throw RuntimeException("Ticket not found")
     }
+
+    fun publish(ticket: Ticket) {
+    }
 }

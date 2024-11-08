@@ -15,8 +15,8 @@ class TicketRepository(
             ?.let { TicketMapper.toDomain(it) }
     }
 
-    fun save(updateTicket: Ticket): Ticket {
-        val ticketEntity = TicketMapper.toEntity(updateTicket)
+    fun save(ticket: Ticket): Ticket {
+        val ticketEntity = TicketMapper.toEntity(ticket)
         return ticketMongoRepository.save(ticketEntity)
             .run { TicketMapper.toDomain(this) }
     }
