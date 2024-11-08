@@ -9,8 +9,7 @@ data class TicketEntity(
     val memberSeq: Long,
     val timestamp: LocalDateTimeNano,
     val status: String,
-) {
-}
+)
 
 class LocalDateTimeNano(
     private val timestamp: LocalDateTime = LocalDateTime.now(),

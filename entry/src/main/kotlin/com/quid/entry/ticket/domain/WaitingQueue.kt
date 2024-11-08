@@ -1,9 +1,9 @@
-package com.quid.entry.ticket.infra.repository
+package com.quid.entry.ticket.domain
 
 import java.time.LocalDateTime
 import java.time.ZoneOffset.UTC
 
-data class WaitingQueueEntity(
+data class WaitingQueue(
     val memberSeq: Long,
     val timestamp: LocalDateTime,
 ) {

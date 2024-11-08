@@ -2,7 +2,6 @@ package com.quid.entry.ticket.domain
 
 import com.quid.entry.ticket.infra.repository.LocalDateTimeNano
 import com.quid.entry.ticket.infra.repository.TicketEntity
-import com.quid.entry.ticket.infra.repository.WaitingQueueEntity
 
 object TicketMapper {
 
@@ -16,8 +15,8 @@ object TicketMapper {
         )
     }
 
-    fun toWaiting(ticket: Ticket): WaitingQueueEntity {
-        return WaitingQueueEntity(
+    fun toWaiting(ticket: Ticket): WaitingQueue {
+        return WaitingQueue(
             memberSeq = ticket.memberSeq,
             timestamp = ticket.timestamp,
         )

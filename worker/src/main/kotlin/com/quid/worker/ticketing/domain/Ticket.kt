@@ -10,6 +10,10 @@ data class Ticket(
     val timestamp: LocalDateTime,
     val status: String,
 ) {
-    val waitingQueue: WaitingQueue
-        get() = WaitingQueue(memberSeq, timestamp)
+    fun toWaitingQueue(): WaitingQueue {
+        return WaitingQueue(
+            memberSeq = memberSeq,
+            timestamp = timestamp
+        )
+    }
 }
