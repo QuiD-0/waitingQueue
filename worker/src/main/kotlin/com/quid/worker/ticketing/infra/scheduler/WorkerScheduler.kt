@@ -1,6 +1,6 @@
-package com.quid.worker.ticket.infra.scheduler
+package com.quid.worker.ticketing.infra.scheduler
 
-import com.quid.worker.ticket.application.TicketingFacade
+import com.quid.worker.ticketing.application.TicketingFacade
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled

@@ -1,4 +1,4 @@
-package com.quid.worker.ticket.infra.repository
+package com.quid.worker.ticketing.infra.repository
 
 import org.springframework.stereotype.Repository
 
