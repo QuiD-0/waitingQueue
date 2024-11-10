@@ -22,6 +22,10 @@ class WaitingQueueRepository(
             ?.run { this.first().toLong() }
     }
 
+    fun isEmpty(): Boolean {
+        return queueRedisTemplate.opsForZSet().size(KEY) == 0L
+    }
+
     companion object {
         private const val KEY = "waiting_queue"
         private const val ACTIVE = "active::waiting_queue"

@@ -1,19 +1,36 @@
 package com.quid.worker.ticketing.infra.scheduler
 
 import com.quid.worker.ticketing.application.TicketingFacade
+import com.quid.worker.ticketing.domain.WaitingQueueService
+import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
 class WorkerScheduler(
-    private val ticketing: TicketingFacade
+    private val ticketing: TicketingFacade,
+    private val waitingQueueService: WaitingQueueService
 ) {
     val log = LoggerFactory.getLogger(this::class.java)!!
 
-    @Scheduled(fixedDelay = 500)
+    @PostConstruct
     fun process() {
-        ticketing.processNext()
+        for (i in 1..10) {
+            Thread {
+                while (true) {
+                    worker()
+                }
+            }.start()
+        }
+    }
+
+    private fun worker() {
+        if (waitingQueueService.isEmpty()) {
+            log.info("No ticket to process")
+            return
+        }
         log.info("Processing next ticket")
+        ticketing.processNext()
+        log.info("Ticket processed")
     }
 }

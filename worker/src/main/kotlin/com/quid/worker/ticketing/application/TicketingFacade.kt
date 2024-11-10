@@ -12,10 +12,15 @@ class TicketingFacade(
 ) {
 
     fun processNext() {
-        waitingQueueService.activeCountUp()
-        val ticket: Ticket = ticketService.findFirstTicket()
-        ticketService.enter(ticket)
-        waitingQueueService.publish(ticket)
-        waitingQueueService.activeCountDown()
+        try {
+            waitingQueueService.activeCountUp()
+            val ticket: Ticket = ticketService.findFirstTicket()
+            ticketService.enter(ticket)
+            waitingQueueService.publish(ticket)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            waitingQueueService.activeCountDown()
+        }
     }
 }

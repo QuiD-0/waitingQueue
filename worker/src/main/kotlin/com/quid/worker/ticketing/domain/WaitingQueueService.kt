@@ -21,4 +21,8 @@ class WaitingQueueService(
 
     fun publish(ticket: Ticket) {
     }
+
+    fun isEmpty(): Boolean {
+        return waitingQueueRepository.isEmpty()
+    }
 }
