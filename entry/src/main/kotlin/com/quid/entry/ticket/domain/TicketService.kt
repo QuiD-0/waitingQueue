@@ -19,13 +19,13 @@ class TicketService(
     }
 
     fun needWaiting(ticket: Ticket): Boolean {
-        if (waitingQueueRepository.existsBy(ticket.memberSeq)) {
+        if (waitingQueueRepository.getActiveCount() > limit) {
             return true
         }
         if (waitingQueueRepository.getWaitingCount() > 0) {
             return true
         }
-        if (waitingQueueRepository.getActiveCount() > limit) {
+        if (waitingQueueRepository.existsBy(ticket.memberSeq)) {
             return true
         }
         return false
