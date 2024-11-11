@@ -9,12 +9,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 
 
 @Configuration
-class RedisTemplateConfig {
+class RedisTemplateConfig(
+    private val redisConnectionFactory: RedisConnectionFactory
+) {
 
     @Bean
-    fun <T> redisTemplate(connectionFactory: RedisConnectionFactory?): RedisTemplate<String, T> {
+    fun <T> redisTemplate(): RedisTemplate<String, T> {
         return RedisTemplate<String, T>().apply {
-            setConnectionFactory(connectionFactory!!)
+            connectionFactory = redisConnectionFactory
             keySerializer = StringRedisSerializer()
             valueSerializer = GenericJackson2JsonRedisSerializer()
             afterPropertiesSet()

@@ -28,7 +28,8 @@ class TicketService(
         val proceed = updateStatus(ticket, PROCEED)
             .let { ticketRepository.save(it) }
 
-        val seconds = SecureRandom().nextLong()
+        val seconds = SecureRandom().nextLong(10)
+        println("Processing ticket: $ticket, $seconds seconds")
         Thread.sleep(seconds * 1000)
         log.info("Ticket processed: $ticket")
 

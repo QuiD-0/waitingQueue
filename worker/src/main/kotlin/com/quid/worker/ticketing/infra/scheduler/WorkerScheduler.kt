@@ -6,12 +6,11 @@ import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextClosedEvent
-import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import java.lang.Thread.sleep
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@Order(1)
 @Component
 class WorkerScheduler(
     private val ticketing: TicketingFacade,
@@ -23,10 +22,11 @@ class WorkerScheduler(
     @PostConstruct
     fun init() {
         log.info("Starting worker")
-        for (i in 0..9) {
+        for (i in 0..0) {
             executorService.submit {
                 while (true) {
                     worker()
+                    sleep(10_000)
                 }
             }
         }
@@ -42,9 +42,8 @@ class WorkerScheduler(
             log.info("No ticket to process")
             return
         }
-        log.info("Processing next ticket")
+        log.info("Processing ticket")
         ticketing.processNext()
-        log.info("Ticket processed")
     }
 
 }

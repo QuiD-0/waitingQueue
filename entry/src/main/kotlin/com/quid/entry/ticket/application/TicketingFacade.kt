@@ -9,7 +9,8 @@ class TicketingFacade(
     private val ticketService: TicketService,
 ) {
     fun proceed(domain: Ticket): String {
-        if (ticketService.needWaiting(domain)) {
+        //개발 테스트를 위해 무조건 대기열 등록
+        if (true or ticketService.needWaiting(domain)) {
             ticketService.merge(domain)
             return "/waiting"
         }

@@ -2,6 +2,7 @@ package com.quid.worker.ticketing.infra.repository
 
 import com.quid.worker.ticketing.domain.Ticket
 import com.quid.worker.ticketing.domain.TicketMapper
+import com.quid.worker.ticketing.domain.TicketStatus
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
@@ -11,7 +12,7 @@ class TicketRepository(
     private val ticketMongoRepository: TicketMongoRepository
 ) {
     fun findByMemberSeq(memberSeq: Long): Ticket? {
-        return ticketMongoRepository.findByMemberSeq(memberSeq)
+        return ticketMongoRepository.findByMemberSeqAndStatusNot(memberSeq, TicketStatus.DONE.name)
             ?.let { TicketMapper.toDomain(it) }
     }
 
@@ -23,5 +24,5 @@ class TicketRepository(
 }
 
 interface TicketMongoRepository : MongoRepository<TicketEntity, ObjectId> {
-    fun findByMemberSeq(memberSeq: Long): TicketEntity?
+    fun findByMemberSeqAndStatusNot(memberSeq: Long, status: String): TicketEntity?
 }

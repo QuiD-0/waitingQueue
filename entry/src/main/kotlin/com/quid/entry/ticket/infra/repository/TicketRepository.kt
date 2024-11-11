@@ -2,6 +2,8 @@ package com.quid.entry.ticket.infra.repository
 
 import com.quid.entry.ticket.domain.Ticket
 import com.quid.entry.ticket.domain.TicketMapper
+import com.quid.entry.ticket.domain.TicketStatus
+import com.quid.entry.ticket.domain.TicketStatus.WAITING
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
@@ -15,7 +17,7 @@ class TicketRepository(
     }
 
     fun findBy(ticket: String, memberSeq: Long): Ticket? {
-        val ticketEntity = ticketMongoRepository.findByRedirectUrlAndMemberSeq(ticket, memberSeq)
+        val ticketEntity = ticketMongoRepository.findByRedirectUrlAndMemberSeqAndStatus(ticket, memberSeq, WAITING)
         return ticketEntity?.let { TicketMapper.toDomain(it) }
     }
 
@@ -27,5 +29,9 @@ class TicketRepository(
 
 interface TicketMongoRepository : MongoRepository<TicketEntity, ObjectId> {
     fun existsByRedirectUrlAndMemberSeq(redirectUrl: String, memberSeq: Long): Boolean
-    fun findByRedirectUrlAndMemberSeq(redirectUrl: String, memberSeq: Long): TicketEntity?
+    fun findByRedirectUrlAndMemberSeqAndStatus(
+        redirectUrl: String,
+        memberSeq: Long,
+        status: TicketStatus
+    ): TicketEntity?
 }

@@ -3,3 +3,4 @@ spring:
     name: worker-server
 server:
   shutdown: graceful
+  port: 8090

@@ -20,6 +20,7 @@ class WaitingQueueRepository(
     fun findFirstTicket(): Long? {
         return queueRedisTemplate.opsForZSet().range(KEY, 0, 0)
             ?.run { this.first().toLong() }
+            .also { queueRedisTemplate.opsForZSet().remove(KEY, it.toString()) }
     }
 
     fun isEmpty(): Boolean {
