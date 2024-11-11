@@ -6,15 +6,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class WaitingQueueRepository(
     private val queueRedisTemplate: RedisTemplate<String, String>,
-    private val activeCountRedisTemplate: RedisTemplate<String, Int>
 ) {
 
     fun activeCountUp() {
-        activeCountRedisTemplate.opsForValue().increment(ACTIVE)
+        queueRedisTemplate.opsForValue().increment(ACTIVE)
     }
 
     fun activeCountDown() {
-        activeCountRedisTemplate.opsForValue().decrement(ACTIVE)
+        queueRedisTemplate.opsForValue().decrement(ACTIVE)
     }
 
     fun findFirstTicket(): Long? {

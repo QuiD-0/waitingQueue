@@ -15,28 +15,28 @@ interface WaitingQueueRepository {
 
 @Repository
 class WaitingQueueRedisRepository(
-    private val intTemplate: RedisTemplate<String, Int>,
-    private val waitingQueueTemplate: RedisTemplate<String, Long>,
+    private val waitingQueueTemplate: RedisTemplate<String, String>,
 ) : WaitingQueueRepository {
     override fun getWaitingCount(): Int {
         return waitingQueueTemplate.opsForZSet().size(KEY)?.toInt() ?: 0
     }
 
     override fun getActiveCount(): Int {
-        return intTemplate.opsForValue().get(ACTIVE) ?: 0
+        return waitingQueueTemplate.opsForValue().get(ACTIVE)?.toInt() ?: 0
     }
 
     override fun add(ticket: Ticket) {
         val waitingQueue = toWaiting(ticket)
-        waitingQueueTemplate.opsForZSet().add(KEY, waitingQueue.value, waitingQueue.score)
+        waitingQueueTemplate.opsForZSet().add(KEY, "${waitingQueue.value}", waitingQueue.score)
     }
 
     override fun getCurrentRank(value: Long): Int {
-        return waitingQueueTemplate.opsForZSet().rank(KEY, value)?.toInt() ?: throw RuntimeException("Ticket not found")
+        return waitingQueueTemplate.opsForZSet().rank(KEY, "$value")?.toInt()
+            ?: throw RuntimeException("Ticket not found")
     }
 
     override fun existsBy(value: Long): Boolean {
-        return waitingQueueTemplate.opsForZSet().score(KEY, value) != null
+        return waitingQueueTemplate.opsForZSet().score(KEY, "$value") != null
     }
 
     companion object {

@@ -1,16 +1,17 @@
 package com.quid.entry.ticket.infra.message
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.connection.MessageListener
 import org.springframework.stereotype.Component
 
 @Component
-class RedisSubscribeListener(
-    private val objectMapper: ObjectMapper
-) : MessageListener {
+class RedisSubscribeListener : MessageListener {
+    private val objectMapper: ObjectMapper = jacksonObjectMapper()
+
     override fun onMessage(message: Message, pattern: ByteArray?) {
-        val readValue = objectMapper.readValue(message.body, NotifyUserMessage::class.java)
-        println("message = $readValue")
+        val readValue = objectMapper.readValue(String(message.body), NotifyUserMessage::class.java)
+        println("Received message: $readValue")
     }
 }
