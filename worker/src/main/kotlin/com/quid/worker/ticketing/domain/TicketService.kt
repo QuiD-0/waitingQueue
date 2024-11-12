@@ -16,7 +16,7 @@ class TicketService(
     fun findFirstTicket(): Ticket {
         val memberSeq: Long = waitingQueueService.getFirstTicketMember()
         return ticketRepository.findByMemberSeq(memberSeq)
-            ?: throw IllegalArgumentException("Ticket not found")
+            ?: throw RuntimeException("Ticket not found")
     }
 
     fun updateStatus(ticket: Ticket, status: TicketStatus): Ticket {
