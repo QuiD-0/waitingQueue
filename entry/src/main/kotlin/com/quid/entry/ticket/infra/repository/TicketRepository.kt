@@ -7,6 +7,7 @@ import com.quid.entry.ticket.domain.TicketStatus.WAITING
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class TicketRepository(
@@ -24,6 +25,10 @@ class TicketRepository(
     fun save(ticket: Ticket): Ticket {
         val ticketEntity = TicketMapper.toTicketEntity(ticket)
         return TicketMapper.toDomain(ticketMongoRepository.save(ticketEntity))
+    }
+
+    fun findStartingTime(redirectUrl: String): LocalDateTime {
+        return LocalDateTime.now()
     }
 }
 

@@ -10,6 +10,10 @@ data class Ticket(
     val timestamp: LocalDateTime,
     val status: TicketStatus,
 ) {
+    fun isBefore(findStartingTime: LocalDateTime): Boolean {
+        return timestamp.isBefore(findStartingTime)
+    }
+
     constructor(
         redirectUrl: String,
         memberSeq: Long,
