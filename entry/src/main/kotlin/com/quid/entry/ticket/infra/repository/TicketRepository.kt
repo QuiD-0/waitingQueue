@@ -28,7 +28,7 @@ class TicketRepository(
     }
 
     fun findStartingTime(redirectUrl: String): LocalDateTime {
-        return LocalDateTime.now()
+        return LocalDateTime.of(2024, 11, 16, 0, 0)
     }
 }
 
