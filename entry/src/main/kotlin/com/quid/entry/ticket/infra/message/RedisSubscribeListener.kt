@@ -7,11 +7,13 @@ import org.springframework.data.redis.connection.MessageListener
 import org.springframework.stereotype.Component
 
 @Component
-class RedisSubscribeListener : MessageListener {
+class RedisSubscribeListener(
+    private val sseEmitterService: SseEmitterService
+) : MessageListener {
     private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
         val readValue = objectMapper.readValue(String(message.body), NotifyUserMessage::class.java)
-        println("Received message: $readValue")
+        sseEmitterService.send(readValue.memberSeq, "COMPLETE")
     }
 }

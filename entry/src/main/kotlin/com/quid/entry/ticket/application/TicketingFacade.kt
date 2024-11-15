@@ -15,8 +15,4 @@ class TicketingFacade(
         ticketService.merge(domain)
         return "/waiting"
     }
-
-    fun getCurrentRank(redirectUrl: String, memberSeq: Long): Int {
-        return ticketService.getCurrentRank(redirectUrl, memberSeq)
-    }
 }
