@@ -18,10 +18,10 @@ class EntryController(
     val log = LoggerFactory.getLogger(this::class.java)!!
 
     @PostMapping("/entry")
-    fun entry(@RequestBody entry: EntryRequest): String {
+    fun entry(@RequestBody entry: EntryRequest): EntryResponse {
         log.info("entry request: $entry")
         ticketing.proceed(entry.toTicket())
-        return "/waiting"
+        return EntryResponse("/waiting")
     }
 
     @GetMapping("/queue")
