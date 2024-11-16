@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service
 class TicketingFacade(
     private val ticketService: TicketService,
 ) {
-    fun proceed(domain: Ticket): String {
+    fun proceed(domain: Ticket) {
         if (ticketService.isBeforeStarting(domain)) {
             throw IllegalStateException("Ticketing is not started yet.")
         }
         ticketService.merge(domain)
-        return "/waiting"
     }
 }

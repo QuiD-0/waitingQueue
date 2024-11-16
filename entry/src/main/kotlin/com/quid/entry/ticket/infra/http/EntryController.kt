@@ -22,7 +22,7 @@ class EntryController(
     fun entry(@RequestBody entry: EntryRequest, response: HttpServletResponse) {
         log.info("entry request: $entry")
         ticketing.proceed(entry.toTicket())
-            .let { response.sendRedirect(it) }
+        response.sendRedirect("/waiting")
     }
 
     @GetMapping("/queue")
