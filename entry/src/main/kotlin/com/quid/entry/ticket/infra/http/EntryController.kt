@@ -2,7 +2,6 @@ package com.quid.entry.ticket.infra.http
 
 import com.quid.entry.ticket.application.TicketingFacade
 import com.quid.entry.ticket.application.WaitingFacade
-import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,10 +18,10 @@ class EntryController(
     val log = LoggerFactory.getLogger(this::class.java)!!
 
     @PostMapping("/entry")
-    fun entry(@RequestBody entry: EntryRequest, response: HttpServletResponse) {
+    fun entry(@RequestBody entry: EntryRequest): String {
         log.info("entry request: $entry")
         ticketing.proceed(entry.toTicket())
-        response.sendRedirect("/waiting")
+        return "/waiting"
     }
 
     @GetMapping("/queue")

@@ -4,7 +4,11 @@ import instance from '../modules/axiosModule.js'
 export default {
   setup() {
     const callApi = (url) => {
-      instance.post("/entry")
+      let data = {
+        redirectUrl: url,
+        memberSeq: 1
+      }
+      instance.post("/entry", data)
         .then(res => {
           console.log(res)
         })
