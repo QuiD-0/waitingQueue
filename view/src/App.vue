@@ -1,10 +1,10 @@
 <script setup>
-import ItemBox from './components/ItemBox.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
   <main>
-    <ItemBox url="https://www.naver.com"/>
+    <RouterView />  
   </main>
 </template>
 
