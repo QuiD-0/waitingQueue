@@ -3,6 +3,7 @@ package com.quid.entry.ticket.infra.http
 import com.quid.entry.ticket.application.TicketingFacade
 import com.quid.entry.ticket.application.WaitingFacade
 import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -33,7 +34,7 @@ class EntryController(
         return QueueResponse(currentRank)
     }
 
-    @GetMapping("/sse", produces = ["text/event-stream"])
+    @GetMapping("/sse", produces = [TEXT_EVENT_STREAM_VALUE])
     fun connectSse(
         @RequestParam memberSeq: Long
     ): SseEmitter {

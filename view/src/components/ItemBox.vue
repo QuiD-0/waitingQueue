@@ -6,7 +6,7 @@ export default {
     const callApi = (url) => {
       let data = {
         redirectUrl: url,
-        memberSeq: 2
+        memberSeq: 1
       }
       instance.post("/entry", data)
         .then(res => {

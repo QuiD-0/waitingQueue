@@ -35,14 +35,26 @@ export default {
                     console.log(err.response);
                     
                 })
+        },
+        connectSse() {
+            let queryParam = `?memberSeq=${this.memberSeq}`
+            let url = 'http://localhost:8080/sse'
+            const eventSource = new EventSource(url + queryParam)
+            eventSource.addEventListener("notify", (event) => {
+                if (event.data === 'COMPLETE') {
+                    eventSource.close()
+                    window.location.href = this.redirectUrl
+                }
+            })
         }
     },
     mounted() {
         this.getParams()
         this.getCount()
+        this.connectSse()
         setInterval(() => {
             this.getCount()
-        }, 10000)
+        }, 10_000)
     }
 }
 </script>
