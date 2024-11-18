@@ -10,10 +10,10 @@ export default {
       }
       instance.post("/entry", data)
         .then(res => {
-          console.log(res)
+          window.location.href = res.data.returnUrl
         })
         .catch(err => {
-          console.error(err)
+          alert(err.response.data.message)
         })
     }
     return { callApi }

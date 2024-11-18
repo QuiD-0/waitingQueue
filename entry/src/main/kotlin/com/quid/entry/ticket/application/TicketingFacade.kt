@@ -10,7 +10,7 @@ class TicketingFacade(
 ) {
     fun proceed(domain: Ticket) {
         if (ticketService.isBeforeStarting(domain)) {
-            throw IllegalStateException("Ticketing is not started yet.")
+            throw RuntimeException("Ticketing is not started yet.")
         }
         ticketService.merge(domain)
     }
