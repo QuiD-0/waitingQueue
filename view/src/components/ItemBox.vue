@@ -12,7 +12,6 @@ export default {
         .then(res => {
           let queryParam = `?redirectUrl=${data.redirectUrl}&memberSeq=${data.memberSeq}`
           window.location.href = res.data.returnUrl + queryParam
-
         })
         .catch(err => {
           alert(err.response.data.message)

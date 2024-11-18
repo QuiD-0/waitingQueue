@@ -14,7 +14,7 @@ export default {
         return {
             redirectUrl: '',
             memberSeq: '',
-            count: 0
+            count: -1
         }
     },
     methods: {
@@ -28,12 +28,10 @@ export default {
             let queryParam = `?redirectUrl=${this.redirectUrl}&memberSeq=${this.memberSeq}`
             instance.get('/queue' + queryParam)
                 .then(res => {
-                    console.log(res.data);
                     this.count = res.data.rank
                 })
                 .catch(err => {
                     console.log(err.response);
-                    
                 })
         },
         connectSse() {
@@ -53,8 +51,9 @@ export default {
         this.getCount()
         this.connectSse()
         setInterval(() => {
+            if(this.count === 0) return
             this.getCount()
-        }, 10_000)
+        }, 5_000)
     }
 }
 </script>

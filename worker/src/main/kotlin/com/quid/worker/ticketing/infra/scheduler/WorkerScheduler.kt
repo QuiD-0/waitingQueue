@@ -22,7 +22,7 @@ class WorkerScheduler(
     @PostConstruct
     fun init() {
         log.info("Starting worker")
-        for (i in 0..0) {
+        for (i in 0..10) {
             executorService.submit {
                 while (true) {
                     worker()
