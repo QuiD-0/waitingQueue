@@ -28,8 +28,9 @@ class EntryController(
     fun getCurrentRank(
         @RequestParam redirectUrl: String,
         @RequestParam memberSeq: Long
-    ): Int {
-        return waiting.getCurrentRank(redirectUrl, memberSeq)
+    ): QueueResponse {
+        val currentRank = waiting.getCurrentRank(redirectUrl, memberSeq)
+        return QueueResponse(currentRank)
     }
 
     @GetMapping("/sse", produces = ["text/event-stream"])

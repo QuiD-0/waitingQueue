@@ -6,11 +6,13 @@ export default {
     const callApi = (url) => {
       let data = {
         redirectUrl: url,
-        memberSeq: 1
+        memberSeq: 2
       }
       instance.post("/entry", data)
         .then(res => {
-          window.location.href = res.data.returnUrl
+          let queryParam = `?redirectUrl=${data.redirectUrl}&memberSeq=${data.memberSeq}`
+          window.location.href = res.data.returnUrl + queryParam
+
         })
         .catch(err => {
           alert(err.response.data.message)

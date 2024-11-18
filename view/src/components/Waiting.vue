@@ -2,12 +2,48 @@
     <div class="waiting-screen">
         <h1>Waiting...</h1>
         <p>Please wait while we process your request.</p>
+        <div>현재 내 대기순번 {{ count }}</div>
     </div>
 </template>
 
 <script>
+import instance from '../modules/axiosModule.js'
 export default {
-    name: 'WaitingScreen'
+    name: 'WaitingScreen',
+    data() {
+        return {
+            redirectUrl: '',
+            memberSeq: '',
+            count: 0
+        }
+    },
+    methods: {
+        getParams() {
+            const url = new URL(window.location.href)
+            const params = new URLSearchParams(url.search)
+            this.redirectUrl = params.get('redirectUrl')
+            this.memberSeq = params.get('memberSeq')
+        },
+        getCount() {
+            let queryParam = `?redirectUrl=${this.redirectUrl}&memberSeq=${this.memberSeq}`
+            instance.get('/queue' + queryParam)
+                .then(res => {
+                    console.log(res.data);
+                    this.count = res.data.rank
+                })
+                .catch(err => {
+                    console.log(err.response);
+                    
+                })
+        }
+    },
+    mounted() {
+        this.getParams()
+        this.getCount()
+        setInterval(() => {
+            this.getCount()
+        }, 10000)
+    }
 }
 </script>
 
