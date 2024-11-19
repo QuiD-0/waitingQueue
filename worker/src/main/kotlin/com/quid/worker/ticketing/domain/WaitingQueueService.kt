@@ -1,5 +1,7 @@
 package com.quid.worker.ticketing.domain
 
+import com.quid.worker.ticketing.domain.TicketMapper.toDomain
+import com.quid.worker.ticketing.domain.TicketMapper.toEntity
 import com.quid.worker.ticketing.infra.message.NotifyPublisher
 import com.quid.worker.ticketing.infra.message.NotifyUserMessage
 import com.quid.worker.ticketing.infra.repository.WaitingQueueRepository
@@ -18,15 +20,16 @@ class WaitingQueueService(
         waitingQueueRepository.activeCountDown()
     }
 
-    fun getFirstTicketMember(): Long {
-        return waitingQueueRepository.findFirstTicket() ?: throw RuntimeException("Ticket not found")
+    fun getFirstTicketMember(): Ticket? {
+        return waitingQueueRepository.findFirstTicket()
+            ?.let { toDomain(it) }
     }
 
     fun publish(ticket: Ticket) {
         notifyPublisher.publish(NotifyUserMessage(ticket.memberSeq))
     }
 
-    fun isEmpty(): Boolean {
-        return waitingQueueRepository.isEmpty()
+    fun save(ticket: Ticket) {
+        waitingQueueRepository.save(toEntity(ticket))
     }
 }

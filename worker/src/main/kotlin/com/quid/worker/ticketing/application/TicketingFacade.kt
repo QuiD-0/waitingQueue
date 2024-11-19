@@ -1,6 +1,5 @@
 package com.quid.worker.ticketing.application
 
-import com.quid.worker.ticketing.domain.Ticket
 import com.quid.worker.ticketing.domain.TicketService
 import com.quid.worker.ticketing.domain.WaitingQueueService
 import org.slf4j.LoggerFactory
@@ -14,14 +13,16 @@ class TicketingFacade(
     private val log = LoggerFactory.getLogger(this::class.java)!!
 
     fun processNext() {
+        log.info("Processing next ticket")
+        val ticket = ticketService.findFirstTicket() ?: return
+
         try {
             waitingQueueService.activeCountUp()
-            val ticket: Ticket = ticketService.findFirstTicket()
-            log.info("found ticket: $ticket")
             ticketService.enter(ticket)
             waitingQueueService.publish(ticket)
         } catch (e: Exception) {
             e.printStackTrace()
+            waitingQueueService.save(ticket)
         } finally {
             waitingQueueService.activeCountDown()
         }

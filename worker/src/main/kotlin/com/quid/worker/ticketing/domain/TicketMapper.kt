@@ -1,28 +1,34 @@
 package com.quid.worker.ticketing.domain
 
-import com.quid.worker.ticketing.infra.repository.LocalDateTimeNano
-import com.quid.worker.ticketing.infra.repository.TicketEntity
-import org.bson.types.ObjectId
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.quid.worker.ticketing.infra.repository.WaitingQueue
+import java.time.LocalDateTime
+import java.time.ZoneOffset.UTC
 
 object TicketMapper {
-    fun toEntity(ticket: Ticket): TicketEntity {
-        return TicketEntity(
-            id = ticket.id?.let { ObjectId(it) } ?: ObjectId(),
+    fun toEntity(ticket: Ticket): WaitingQueue {
+        return WaitingQueue(
             redirectUrl = ticket.redirectUrl,
             memberSeq = ticket.memberSeq,
-            timestamp = LocalDateTimeNano(ticket.timestamp),
-            status = ticket.status.name
+            timestamp = ticket.timestamp.toString(),
         )
     }
 
-    fun toDomain(ticketEntity: TicketEntity): Ticket {
+    fun toDomain(waitingQueue: WaitingQueue): Ticket {
         return Ticket(
-            id = ticketEntity.id.toHexString(),
-            redirectUrl = ticketEntity.redirectUrl,
-            memberSeq = ticketEntity.memberSeq,
-            timestamp = ticketEntity.timestamp.toLocalDateTime(),
-            status = TicketStatus.valueOf(ticketEntity.status)
+            redirectUrl = waitingQueue.redirectUrl,
+            memberSeq = waitingQueue.memberSeq,
+            timestamp = LocalDateTime.parse(waitingQueue.timestamp!!),
         )
     }
 
+    fun jsonToEntity(json: String, score: Double): WaitingQueue {
+        val waitingQueue = ObjectMapper().readValue(json, WaitingQueue::class.java)
+        val second = score.toLong() / 1_000_000_000
+        val nano = (score.toLong() % 1_000_000_000).toInt()
+        val ofEpochSecond = LocalDateTime.ofEpochSecond(second, nano, UTC)
+        return waitingQueue.copy(
+            timestamp = ofEpochSecond.toString(),
+        )
+    }
 }

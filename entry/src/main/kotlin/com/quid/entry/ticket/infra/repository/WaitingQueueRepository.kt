@@ -9,8 +9,7 @@ interface WaitingQueueRepository {
     fun getWaitingCount(): Int
     fun getActiveCount(): Int
     fun add(ticket: Ticket)
-    fun getCurrentRank(value: Long): Int
-    fun existsBy(value: Long): Boolean
+    fun getCurrentRank(ticket: Ticket): Int
 }
 
 @Repository
@@ -27,16 +26,13 @@ class WaitingQueueRedisRepository(
 
     override fun add(ticket: Ticket) {
         val waitingQueue = toWaiting(ticket)
-        waitingQueueTemplate.opsForZSet().add(KEY, "${waitingQueue.value}", waitingQueue.score)
+        waitingQueueTemplate.opsForZSet().addIfAbsent(KEY, waitingQueue.value(), waitingQueue.score)
     }
 
-    override fun getCurrentRank(value: Long): Int {
-        return waitingQueueTemplate.opsForZSet().rank(KEY, "$value")?.toInt()
+    override fun getCurrentRank(ticket: Ticket): Int {
+        val waitingQueue = toWaiting(ticket)
+        return waitingQueueTemplate.opsForZSet().rank(KEY, waitingQueue.value())?.toInt()
             ?: throw RuntimeException("Ticket not found")
-    }
-
-    override fun existsBy(value: Long): Boolean {
-        return waitingQueueTemplate.opsForZSet().score(KEY, "$value") != null
     }
 
     companion object {
