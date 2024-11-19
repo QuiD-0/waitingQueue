@@ -17,8 +17,8 @@ class TicketRepository(
         return ticketMongoRepository.existsByRedirectUrlAndMemberSeq(redirectUrl, memberSeq)
     }
 
-    fun findBy(ticket: String, memberSeq: Long): Ticket? {
-        val ticketEntity = ticketMongoRepository.findByRedirectUrlAndMemberSeqAndStatus(ticket, memberSeq, WAITING)
+    fun findBy(redirectUrl: String, memberSeq: Long): Ticket? {
+        val ticketEntity = ticketMongoRepository.findByRedirectUrlAndMemberSeqAndStatus(redirectUrl, memberSeq, WAITING)
         return ticketEntity?.let { TicketMapper.toDomain(it) }
     }
 

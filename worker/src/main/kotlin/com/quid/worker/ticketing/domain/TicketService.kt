@@ -19,21 +19,20 @@ class TicketService(
             ?: throw RuntimeException("Ticket not found")
     }
 
-    fun updateStatus(ticket: Ticket, status: TicketStatus): Ticket {
-        val updateTicket = ticket.updateStatus(status)
-        return ticketRepository.save(updateTicket)
-    }
-
-    fun enter(ticket: Ticket) {
-        val proceed = updateStatus(ticket, PROCEED)
-            .let { ticketRepository.save(it) }
+    fun enter(request: Ticket) {
+        val ticket = updateStatus(request, PROCEED)
 
         val seconds = SecureRandom().nextLong(10)
         log.info("Processing ticket: $ticket, $seconds seconds")
         Thread.sleep(seconds * 1000)
         log.info("Ticket processed: $ticket")
 
-        proceed.updateStatus(TicketStatus.DONE)
-            .let { ticketRepository.save(it) }
+        updateStatus(ticket, TicketStatus.DONE)
+        log.info("Ticket done: $ticket")
+    }
+
+    fun updateStatus(ticket: Ticket, status: TicketStatus): Ticket {
+        val updateTicket = ticket.updateStatus(status)
+        return ticketRepository.save(updateTicket)
     }
 }

@@ -4,11 +4,18 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @RestControllerAdvice
 class ErrorHandler {
+
+    @ExceptionHandler(AsyncRequestTimeoutException::class)
+    fun sseTimeoutException(e: AsyncRequestTimeoutException): SseEmitter? {
+        return null
+    }
 
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<Error> =

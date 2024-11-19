@@ -13,7 +13,7 @@ class SseEmitterService {
     fun connect(memberSeq: Long): SseEmitter {
         log.info("connect memberSeq: $memberSeq")
 
-        val emitter = SseEmitter(10_000L).apply {
+        val emitter = SseEmitter(100_000L).apply {
             onCompletion { emitters.remove(memberSeq) }
             onTimeout { emitters.remove(memberSeq) }
         }
@@ -28,7 +28,9 @@ class SseEmitterService {
     fun send(memberSeq: Long, message: String) {
         val data = makeData(message)
         log.info("send message to memberSeq: $memberSeq")
-        emitters[memberSeq]?.send(data)
+        val sseEmitter = emitters[memberSeq]
+        sseEmitter?.send(data)
+        sseEmitter?.complete()
         emitters.remove(memberSeq)
     }
 
