@@ -5,7 +5,7 @@ import com.quid.entry.ticket.domain.TicketService
 import org.springframework.stereotype.Service
 
 @Service
-class TicketingFacade(
+class TicketIncomeUseCase(
     private val ticketService: TicketService,
 ) {
     fun proceed(domain: Ticket) {

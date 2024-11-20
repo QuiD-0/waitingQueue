@@ -1,7 +1,8 @@
 package com.quid.entry.ticket.infra.http
 
-import com.quid.entry.ticket.application.TicketingFacade
-import com.quid.entry.ticket.application.WaitingFacade
+import com.quid.entry.ticket.application.TicketIncomeUseCase
+import com.quid.entry.ticket.domain.TicketService
+import com.quid.entry.ticket.infra.message.SseEmitterService
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,8 +14,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 
 @RestController
 class EntryController(
-    private val ticketing: TicketingFacade,
-    private val waiting: WaitingFacade
+    private val ticketing: TicketIncomeUseCase,
+    private val ticketService: TicketService,
+    private val emitterService: SseEmitterService
 ) {
     val log = LoggerFactory.getLogger(this::class.java)!!
 
@@ -30,7 +32,7 @@ class EntryController(
         @RequestParam redirectUrl: String,
         @RequestParam memberSeq: Long
     ): QueueResponse {
-        val currentRank = waiting.getCurrentRank(redirectUrl, memberSeq)
+        val currentRank = ticketService.getCurrentRank(redirectUrl, memberSeq)
         return QueueResponse(currentRank)
     }
 
@@ -38,6 +40,6 @@ class EntryController(
     fun connectSse(
         @RequestParam memberSeq: Long
     ): SseEmitter {
-        return waiting.connectSse(memberSeq)
+        return emitterService.connect(memberSeq)
     }
 }
