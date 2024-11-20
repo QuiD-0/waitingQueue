@@ -7,31 +7,35 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class SseEmitterService {
-    private val emitters = ConcurrentHashMap<Long, SseEmitter>()
+    private val bag = ConcurrentHashMap<Long, SseEmitter>()
     private val log = LoggerFactory.getLogger(this::class.java)!!
 
     fun connect(memberSeq: Long): SseEmitter {
         log.info("connect memberSeq: $memberSeq")
 
         val emitter = SseEmitter(100_000L).apply {
-            onCompletion { emitters.remove(memberSeq) }
-            onTimeout { emitters.remove(memberSeq) }
+            onCompletion { bag.remove(memberSeq) }
+            onTimeout { bag.remove(memberSeq) }
         }
 
         val data = makeData("CONNECTED")
 
-        emitters[memberSeq] = emitter
+        bag[memberSeq] = emitter
         emitter.send(data)
         return emitter
     }
 
     fun send(memberSeq: Long, message: String) {
+        val sseEmitter = bag[memberSeq]
+        requireNotNull(sseEmitter) { return }
+
         val data = makeData(message)
+
+        sseEmitter.send(data)
         log.info("send message to memberSeq: $memberSeq")
-        val sseEmitter = emitters[memberSeq]
-        sseEmitter?.send(data)
-        sseEmitter?.complete()
-        emitters.remove(memberSeq)
+
+        sseEmitter.complete()
+        bag.remove(memberSeq)
     }
 
     private fun makeData(message: String): SseEmitter.SseEventBuilder {
