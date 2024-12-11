@@ -17,25 +17,17 @@ class SseEmitterService {
             onCompletion { bag.remove(memberSeq) }
             onTimeout { bag.remove(memberSeq) }
         }
-
-        val data = makeData("CONNECTED")
-
         bag[memberSeq] = emitter
-        emitter.send(data)
         return emitter
     }
 
     fun send(memberSeq: Long, message: String) {
-        val sseEmitter = bag[memberSeq]
-        requireNotNull(sseEmitter) { return }
+        val sseEmitter = bag[memberSeq] ?: return
 
         val data = makeData(message)
 
         sseEmitter.send(data)
         log.info("send message to memberSeq: $memberSeq")
-
-        sseEmitter.complete()
-        bag.remove(memberSeq)
     }
 
     private fun makeData(message: String): SseEmitter.SseEventBuilder {

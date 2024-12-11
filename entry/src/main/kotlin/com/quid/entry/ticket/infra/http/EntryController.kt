@@ -41,5 +41,6 @@ class EntryController(
         @RequestParam memberSeq: Long
     ): SseEmitter {
         return emitterService.connect(memberSeq)
+            .also { emitterService.send(memberSeq, "CONNECTED") }
     }
 }
