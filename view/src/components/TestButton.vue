@@ -17,7 +17,7 @@ export default {
         postEntry(seq) {
             let data = {
                 memberSeq: seq,
-                redirectUrl: 'https://www.naver.com'
+                redirectUrl: 'http://localhost:5173/success'
             }
             instance.post("/entry", data)
                 .catch(err => {

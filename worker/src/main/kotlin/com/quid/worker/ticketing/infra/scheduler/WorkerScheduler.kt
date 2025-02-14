@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextClosedEvent
 import org.springframework.stereotype.Component
-import java.lang.Thread.sleep
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -24,7 +23,6 @@ class WorkerScheduler(
             executorService.submit {
                 while (true) {
                     ticketing.processNext()
-                    sleep(10_000)
                 }
             }
         }

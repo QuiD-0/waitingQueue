@@ -4,7 +4,7 @@ import TestButton from './TestButton.vue'
 </script>
 
 <template>
-    <ItemBox url="https://www.naver.com" />
+    <ItemBox url="http://localhost:5173/success" />
     <TestButton />
 </template>
 
