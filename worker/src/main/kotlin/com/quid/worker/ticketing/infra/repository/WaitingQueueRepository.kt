@@ -20,6 +20,10 @@ class WaitingQueueRepository(
         queueRedisTemplate.opsForValue().decrement(ACTIVE)
     }
 
+    fun findCurrentActiveCount(): Long {
+        return queueRedisTemplate.opsForValue().get(ACTIVE)?.toLong() ?: 0L
+    }
+
     fun findFirstTicket(): Ticket? {
         return queueRedisTemplate.opsForZSet().popMin(KEY)
             ?.let { jsonToEntity(it.value!!, it.score!!) }

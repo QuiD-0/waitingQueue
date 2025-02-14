@@ -16,18 +16,17 @@ class TicketingUseCase(
     private val log = LoggerFactory.getLogger(this::class.java)!!
 
     fun processNext() {
+        waitingQueueService.waitingActiveCount()
         log.info("Processing next ticket")
+
         val ticket = waitingQueueService.findFirstTicket() ?: return
 
         try {
-            waitingQueueService.activeCountUp()
             ticketService.enter(ticket)
             notifyPublisher.publish(NotifyUserMessage(ticket.memberSeq))
         } catch (e: Exception) {
             log.error("Failed to process ticket", e)
             waitingQueueService.save(ticket)
-        } finally {
-            waitingQueueService.activeCountDown()
         }
     }
 }

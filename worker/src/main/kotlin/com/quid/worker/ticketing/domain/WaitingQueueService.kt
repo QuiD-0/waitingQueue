@@ -22,4 +22,12 @@ class WaitingQueueService(
     fun findFirstTicket(): Ticket? {
         return waitingQueueRepository.findFirstTicket()
     }
+
+    fun waitingActiveCount() {
+        var count = waitingQueueRepository.findCurrentActiveCount()
+        while (count >= 100) {
+            Thread.sleep(1000)
+            count = waitingQueueRepository.findCurrentActiveCount()
+        }
+    }
 }
