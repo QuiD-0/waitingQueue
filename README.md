@@ -61,13 +61,13 @@ export default function () {
 1. 우선 인입서버만 실행하여 사용자의 요청을 받고 대기열을 넣는다.  
 
 ![image4.png](assets/image4.png)
-총 42680건의 요청이 생성되어 들어갔으며   
+총 42680건의 요청이 생성되어 들어갔으며    
 
-![image5.png](assets/image5.png)
+![image5.png](assets/image5.png)    
 대기열에도 42680건의 요청이 들어가있음을 확인할 수 있다.
 
 2. 대기열이 잘 동작하는지 확인하기 위해 대기열에 있는 요청을 처리하는 워커 서버를 실행한다.   
 
-![image7.png](assets/image7.png)
-초반 요청이 차래대로 Sorted Set에 들어가고   
-워커 서버 실행 후 대기열이 처리되는 것을 확인할 수 있다.
+![image7.png](assets/image7.png)    
+초반 요청이 차래대로 Sorted Set에 들어가고     
+워커 서버 실행 후 대기열이 처리되는 것을 확인할 수 있다.  
