@@ -22,7 +22,6 @@ class EntryController(
 
     @PostMapping("/entry")
     fun entry(@RequestBody entry: EntryRequest): EntryResponse {
-        log.info("entry request: $entry")
         ticketing.proceed(entry.toTicket())
         return EntryResponse("/waiting")
     }

@@ -29,3 +29,45 @@
 
 ## 테스트
 
+K6를 사용하여 부하를 생성하고 대기열이 잘 동작하는지 확인하였다.
+
+```javascript
+import http from 'k6/http';
+
+export const options = {
+    stages: [
+        { duration: '3s', target: 1000 }, // 1000명의 사용자로 시작
+        { duration: '3s', target: 5000 }, // 점진적으로 5000명까지 증가
+    ],
+};
+
+export default function () {
+    const url = 'http://localhost:8080/entry';
+
+    const random = Math.floor(Math.random() * 10000000) + 1;
+    const data = JSON.stringify({
+        redirectUrl: 'testUrl',
+        memberSeq: random
+    });
+
+    const header = {headers: {'Content-Type': 'application/json',},}
+
+    http.post(url, data, header);
+}
+```
+
+동시 접속자수를 점진적으로 5,000명으로 증가하도록 설정하여 테스트를 진행하였다.
+
+1. 우선 인입서버만 실행하여 사용자의 요청을 받고 대기열을 넣는다.  
+
+![image4.png](assets/image4.png)
+총 42680건의 요청이 생성되어 들어갔으며   
+
+![image5.png](assets/image5.png)
+대기열에도 42680건의 요청이 들어가있음을 확인할 수 있다.
+
+2. 대기열이 잘 동작하는지 확인하기 위해 대기열에 있는 요청을 처리하는 워커 서버를 실행한다.   
+
+![image7.png](assets/image7.png)
+초반 요청이 차래대로 Sorted Set에 들어가고   
+워커 서버 실행 후 대기열이 처리되는 것을 확인할 수 있다.
