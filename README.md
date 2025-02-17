@@ -23,6 +23,18 @@
 4. 인입 서버는 subscribe를 통해 완료되었음을 전달 받아 웹 소켓을 통해 클라이언트에게 전달한다.
 5. 클라이언트는 결과 페이지로 리다이렉트 되어 결과를 확인한다.
 
+## 서버 설명
+
+- entry 서버 
+  - 프론트와 연결 되는 인입 서버
+  - WebSocket을 통해 클라이언트와 통신
+  - Sorted Set(대기열)에 티켓 저장 
+
+- worker 서버
+  - 대기열에서 티켓을 가져와 작업을 하는 서버 
+  - 작업이 완료된 티켓을 프론트에게 전달하기 위해 완료 이벤트 publish
+
+
 ## 시연 화면
 
 ![image2.gif](assets/image2.gif)
@@ -60,7 +72,7 @@ export default function () {
 
 1. 우선 인입서버만 실행하여 사용자의 요청을 받고 대기열을 넣는다.  
 
-![image4.png](assets/image4.png)
+![image4.png](assets/image4.png)   
 총 42680건의 요청이 생성되어 들어갔으며    
 
 ![image5.png](assets/image5.png)    
