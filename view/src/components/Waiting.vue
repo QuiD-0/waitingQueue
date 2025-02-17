@@ -14,7 +14,7 @@ export default {
         return {
             redirectUrl: '',
             memberSeq: '',
-            count: -1
+            count: 0
         }
     },
     methods: {
