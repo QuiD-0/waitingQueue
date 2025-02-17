@@ -11,15 +11,15 @@ import java.util.concurrent.Executors
 
 @Component
 class WorkerScheduler(
-    private val ticketing: TicketingUseCase,
+    private val ticketing: TicketingUseCase
 ) : ApplicationListener<ContextClosedEvent> {
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(10)
+    private val executorService: ExecutorService = Executors.newVirtualThreadPerTaskExecutor()
     private val log = LoggerFactory.getLogger(this::class.java)!!
 
     @PostConstruct
     fun init() {
         log.info("Starting worker")
-        for (i in 0..10) {
+        for (i in 0..100) {
             executorService.submit {
                 while (true) {
                     ticketing.processNext()

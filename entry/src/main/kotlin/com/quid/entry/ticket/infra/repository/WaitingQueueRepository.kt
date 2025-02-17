@@ -10,6 +10,7 @@ interface WaitingQueueRepository {
     fun getActiveCount(): Int
     fun add(ticket: Ticket)
     fun getCurrentRank(ticket: Ticket): Int
+    fun findQueueSize(): Long
 }
 
 @Repository
@@ -33,6 +34,10 @@ class WaitingQueueRedisRepository(
         val waitingQueue = toWaiting(ticket)
         return waitingQueueTemplate.opsForZSet().rank(KEY, waitingQueue.value())?.toInt()
             ?: throw RuntimeException("Ticket not found")
+    }
+
+    override fun findQueueSize(): Long {
+        return waitingQueueTemplate.opsForZSet().zCard(KEY)!!
     }
 
     companion object {
