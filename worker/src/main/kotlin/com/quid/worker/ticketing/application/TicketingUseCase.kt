@@ -16,8 +16,6 @@ class TicketingUseCase(
     private val log = LoggerFactory.getLogger(this::class.java)!!
 
     fun processNext() {
-        
-        log.info("Processing next ticket")
         val ticket = waitingQueueService.findFirstTicket() ?: return
 
         try {

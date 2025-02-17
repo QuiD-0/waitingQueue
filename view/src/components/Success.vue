@@ -1,19 +1,16 @@
 <script setup>
-import instance from '../modules/axiosModule.js'
+import {onMounted} from 'vue'
 
-export default {
-  methods: {
-    onMounted() {
-      instance.post("/countUp", data)
-        .catch(err => {
-          alert(err.response.data.message)
-        })
-    }
-  }
-}
+onMounted(() => {
+  console.log('Success Page Mounted')
+})
+
 </script>
 
 <template>
+  <div>
+    <h1>대기열 진입 성공</h1>
+  </div>
 </template>
 
 <style scoped>
