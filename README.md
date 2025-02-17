@@ -10,7 +10,7 @@
 
 ## 구현 방법
 
-![image1.png](./assets/image1.png)
+![waiting.png](assets/waiting.png)
 
 1. 사용자는 페이지에 접속하여 요청을 보낸다.
 2. 서버는 요청을 받은 뒤 대기 순번을 부여하고 사용자에게 응답을 보낸다.
